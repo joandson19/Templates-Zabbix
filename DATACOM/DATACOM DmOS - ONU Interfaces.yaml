@@ -30,7 +30,7 @@ zabbix_export:
         
         
         ## Author
-        
+        ## Este template foi edutado por Joandson Bezerra para o correto funcionamente no Zabbix v6
         Guilherme Zamora Rodrigues
       groups:
         -
