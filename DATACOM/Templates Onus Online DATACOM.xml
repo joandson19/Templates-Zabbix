@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<zabbix_export>
+    <version>6.0</version>
+    <date>2024-05-28T14:00:12Z</date>
+    <groups>
+        <group>
+            <uuid>8a7f07ec258049f7b26aa2b61ce50f03</uuid>
+            <name>OLT</name>
+        </group>
+    </groups>
+    <templates>
+        <template>
+            <uuid>187c1adbc98f4ffeb14165dbcf9c825d</uuid>
+            <template>Templates Onus Online DATACOM</template>
+            <name>Templates Onus Online DATACOM</name>
+            <groups>
+                <group>
+                    <name>OLT</name>
+                </group>
+            </groups>
+            <items>
+                <item>
+                    <uuid>c8936c6cefc84579bb6e3c45f69bee74</uuid>
+                    <name>Onus Conectadas</name>
+                    <type>SSH</type>
+                    <key>ssh.run[clear]</key>
+                    <params>show interface gpon 1/1/1-16 onu | include Up | count</params>
+                    <username>{$SSHUSER}</username>
+                    <password>{$SSHPASS}</password>
+                    <preprocessing>
+                        <step>
+                            <type>REGEX</type>
+                            <parameters>
+                                <parameter>Count:\s*(\d+)\s*lines</parameter>
+                                <parameter>\1</parameter>
+                            </parameters>
+                        </step>
+                    </preprocessing>
+                    <triggers>
+                        <trigger>
+                            <uuid>27abc91c8a234d95a2afed204fa8140f</uuid>
+                            <expression>last(/Templates Onus Online DATACOM/ssh.run[clear]) &lt; (avg(/Templates Onus Online DATACOM/ssh.run[clear], 7d) * 0.8)</expression>
+                            <name>Onus Conectadas</name>
+                            <priority>HIGH</priority>
+                        </trigger>
+                    </triggers>
+                </item>
+            </items>
+        </template>
+    </templates>
+    <graphs>
+        <graph>
+            <uuid>6dae071371804073bfbfbfba0e7e5b4c</uuid>
+            <name>Onus Conectadas</name>
+            <ymax_type_1>ITEM</ymax_type_1>
+            <ymax_item_1>
+                <host>Templates Onus Online DATACOM</host>
+                <key>ssh.run[clear]</key>
+            </ymax_item_1>
+            <graph_items>
+                <graph_item>
+                    <color>199C0D</color>
+                    <calc_fnc>ALL</calc_fnc>
+                    <item>
+                        <host>Templates Onus Online DATACOM</host>
+                        <key>ssh.run[clear]</key>
+                    </item>
+                </graph_item>
+            </graph_items>
+        </graph>
+    </graphs>
+</zabbix_export>
